@@ -1,0 +1,15 @@
+#pragma kernel CountRedPixels
+
+RWStructuredBuffer<int> result;
+Texture2D<float4> inputTexture;
+
+[numthreads(16, 16, 1)]
+void CountRedPixels(uint3 id : SV_DispatchThreadID)
+{
+    float4 pixel = inputTexture[id.xy];
+    if (pixel.r == 1 && pixel.a != 0)
+    {
+        InterlockedAdd(result[0], 1);
+    }
+}
+
